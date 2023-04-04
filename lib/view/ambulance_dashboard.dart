@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:developer';
 
 import 'package:ambulance_staff/view/service_map_page.dart';
@@ -18,27 +19,6 @@ class Ambulance_dashboard extends StatefulWidget {
 class _Ambulance_dashboardState extends State<Ambulance_dashboard> {
   var latitude;
   var longitude;
-
-  _liveLocation() async {
-    LocationSettings settings = const LocationSettings(
-      accuracy: LocationAccuracy.high,
-      distanceFilter: 20,
-    );
-
-    Geolocator.getPositionStream(locationSettings: settings)
-        .listen((Position position) {
-      setState(() {
-        latitude = position.latitude;
-        longitude = position.longitude;
-      });
-    });
-  }
-
-  @override
-  void initState() {
-    _liveLocation();
-    super.initState();
-  }
 
   @override
   Widget build(BuildContext context) {

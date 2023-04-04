@@ -7,7 +7,6 @@ import 'package:ambulance_staff/view/google_map.dart';
 import 'package:ambulance_staff/view/service_map_page.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-
 import '../model/department_manager.dart';
 import '../resource/constants/colors.dart';
 

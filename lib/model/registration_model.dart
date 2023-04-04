@@ -5,14 +5,14 @@ class RegistrationModel {
   int phoneNumber;
   String email;
   String? category;
-  bool? hasAccess = false;
+  bool hasAccess;
 
   RegistrationModel(
       {required this.name,
       required this.phoneNumber,
       required this.email,
       this.category = "Ambulance Department",
-      this.hasAccess});
+      this.hasAccess = false});
 
   factory RegistrationModel.fromJson(Map<dynamic, dynamic> json) {
     return RegistrationModel(
