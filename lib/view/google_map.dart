@@ -8,7 +8,7 @@ import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:location/location.dart' as loc;
 
 import '../model/request_model.dart';
-import '../resource/constants/constant_values.dart';
+import '../resource/constants/service_constant.dart';
 
 class MyMap extends StatefulWidget {
   final GeoPoint userLocation;

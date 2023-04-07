@@ -5,7 +5,7 @@ import 'package:ambulance_staff/view/ambulance_dashboard.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:ambulance_staff/Controller/authentication_base.dart';
 import 'package:ambulance_staff/Controller/authentication_functions.dart';
-import 'package:ambulance_staff/resource/constants/constant_values.dart';
+import 'package:ambulance_staff/resource/constants/service_constant.dart';
 import 'package:ambulance_staff/utilities/InfoDisplay/dialogbox.dart';
 import 'package:ambulance_staff/view/service_map_page.dart';
 import 'package:flutter/material.dart';
@@ -34,55 +34,55 @@ class _DashboardPageState extends State<DashboardPage> {
   @override
   void initState() {
     super.initState();
-    _determinePosition();
+    // _determinePosition();
   }
 
   // var locationMessage;
 
-  Future<Position?> _determinePosition() async {
-    bool serviceEnabled;
-    LocationPermission permission;
-    var position;
+  // Future<Position?> _determinePosition() async {
+  //   bool serviceEnabled;
+  //   LocationPermission permission;
+  //   var position;
 
-    // Test if location services are enabled.
-    serviceEnabled = await Geolocator.isLocationServiceEnabled();
-    if (!serviceEnabled) {
-      // Location services are not enabled don't continue
-      // accessing the position and request users of the
-      // App to enable the location services.
-      return Future.error('Location services are disabled.');
-    }
+  //   // Test if location services are enabled.
+  //   serviceEnabled = await Geolocator.isLocationServiceEnabled();
+  //   if (!serviceEnabled) {
+  //     // Location services are not enabled don't continue
+  //     // accessing the position and request users of the
+  //     // App to enable the location services.
+  //     return Future.error('Location services are disabled.');
+  //   }
 
-    permission = await Geolocator.checkPermission();
-    if (permission == LocationPermission.denied) {
-      permission = await Geolocator.requestPermission();
-      if (permission == LocationPermission.denied) {
-        // Permissions are denied, next time you could try
-        // requesting permissions again (this is also where
-        // Android's shouldShowRequestPermissionRationale
-        // returned true. According to Android guidelines
-        // your App should show an explanatory UI now.
-        return Future.error('Location permissions are denied');
-      }
-    }
+  //   permission = await Geolocator.checkPermission();
+  //   if (permission == LocationPermission.denied) {
+  //     permission = await Geolocator.requestPermission();
+  //     if (permission == LocationPermission.denied) {
+  //       // Permissions are denied, next time you could try
+  //       // requesting permissions again (this is also where
+  //       // Android's shouldShowRequestPermissionRationale
+  //       // returned true. According to Android guidelines
+  //       // your App should show an explanatory UI now.
+  //       return Future.error('Location permissions are denied');
+  //     }
+  //   }
 
-    if (permission == LocationPermission.deniedForever) {
-      // Permissions are denied forever, handle appropriately.
-      return Future.error(
-          'Location permissions are permanently denied, we cannot request permissions.');
-    }
-    // When we reach here, permissions are granted and we can
-    // continue accessing the position of the device.
-    position = await Geolocator.getCurrentPosition(
-            desiredAccuracy: LocationAccuracy.high)
-        .then((Position position) {
-      setState(() {
-        latitude = position.latitude;
-        longitude = position.longitude;
-      });
-    });
-    return position;
-  }
+  //   if (permission == LocationPermission.deniedForever) {
+  //     // Permissions are denied forever, handle appropriately.
+  //     return Future.error(
+  //         'Location permissions are permanently denied, we cannot request permissions.');
+  //   }
+  //   // When we reach here, permissions are granted and we can
+  //   // continue accessing the position of the device.
+  //   position = await Geolocator.getCurrentPosition(
+  //           desiredAccuracy: LocationAccuracy.high)
+  //       .then((Position position) {
+  //     setState(() {
+  //       latitude = position.latitude;
+  //       longitude = position.longitude;
+  //     });
+  //   });
+  //   return position;
+  // }
 
   @override
   Widget build(BuildContext context) {
@@ -91,7 +91,7 @@ class _DashboardPageState extends State<DashboardPage> {
     final width = MediaQuery.of(context).size.width;
     final userID = Authentication().currentUser!.uid;
     final userProfile =
-        FirebaseFirestore.instance.collection('Users').doc(userID).snapshots();
+        FirebaseFirestore.instance.collection('Staffs').doc(userID).snapshots();
 
     return Consumer<DepartmentManager>(
         builder: (context, departmentManager, child) {
@@ -113,7 +113,7 @@ class _DashboardPageState extends State<DashboardPage> {
             if (snapshot.hasData) {
               // mapping json data to map
               Map<String, dynamic> data =
-                  snapshot.data!.data() as Map<String, dynamic>;
+                  snapshot.data?.data() as Map<String, dynamic>;
 
               // setting the departmentname for provider
               departmentManager.updateDepartment(data['Category']);

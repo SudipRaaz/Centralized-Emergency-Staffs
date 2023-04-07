@@ -4,7 +4,6 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:ambulance_staff/Controller/authentication_functions.dart';
 import 'package:ambulance_staff/resource/components/buttons.dart';
 import 'package:ambulance_staff/view/google_map.dart';
-import 'package:ambulance_staff/view/service_map_page.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../model/department_manager.dart';
@@ -26,17 +25,17 @@ class AmbulanceHistory extends StatelessWidget {
       final Stream<QuerySnapshot> _userHistory = FirebaseFirestore.instance
           .collection('AmbulanceDepartment')
           .where('ambulanceAllotedID',
-              isEqualTo: 'moXCioUSgjQDPidDs5sAe7MmTSy2')
+              isEqualTo: Authentication().currentUser!.uid)
           .snapshots();
 
       return StreamBuilder(
           stream: _userHistory,
           builder: (BuildContext context, AsyncSnapshot snapshot) {
             if (snapshot.hasError) {
-              return Center(child: Text('Something went wrong'));
+              return const Center(child: Text('Something went wrong'));
             }
             if (snapshot.connectionState == ConnectionState.waiting) {
-              return Center(child: Text("Loading"));
+              return const Center(child: Text("Loading"));
             }
             if (snapshot.hasData) {
               //clearing the productsDocs list
@@ -46,12 +45,10 @@ class AmbulanceHistory extends StatelessWidget {
                 Map historyData = document.data() as Map<String, dynamic>;
                 historyDocs.add(historyData);
               }).toList();
-              print(' value of history doc json ${historyDocs}');
-              print(snapshot.data!.docs);
 
               return Scaffold(
                 appBar: AppBar(
-                  title: Text("History"),
+                  title: const Text("History"),
                   backgroundColor: AppColors.appBar_theme,
                 ),
                 body: SizedBox(

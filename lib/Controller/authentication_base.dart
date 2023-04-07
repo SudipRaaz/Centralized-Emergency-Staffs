@@ -1,3 +1,4 @@
+import 'package:ambulance_staff/model/registration_model.dart';
 import 'package:flutter/material.dart';
 
 abstract class AuthenticationBase {
@@ -5,8 +6,8 @@ abstract class AuthenticationBase {
       BuildContext context, String email, String password);
 
   // create users with email and password
-  Future createUserWithEmailAndPassword(BuildContext context, String email,
-      String password, String name, int phoneNumber);
+  Future createUserWithEmailAndPassword(
+      RegistrationModel registerData, String password);
 
   // signout method
   Future signOut();

@@ -1,10 +1,14 @@
 import 'package:ambulance_staff/Controller/authentication_base.dart';
 import 'package:ambulance_staff/Controller/authentication_functions.dart';
+import 'package:ambulance_staff/model/registration_model.dart';
 import 'package:flutter/material.dart';
 import 'package:validators/validators.dart';
 
 import '../resource/components/buttons.dart';
 import '../resource/constants/colors.dart';
+import '../resource/constants/myconstant.dart';
+import '../resource/constants/sized_box.dart';
+import '../resource/constants/style.dart';
 import '../utilities/InfoDisplay/message.dart';
 import '../utilities/routes/routes.dart';
 
@@ -34,6 +38,8 @@ class _RegisterState extends State<Register> {
   double _initialAge = 18;
   // check box default value
   bool _checkBoxValue = false;
+
+  String department = MyConstants().departments.first;
 
   @override
   Widget build(BuildContext context) {
@@ -87,7 +93,7 @@ class _RegisterState extends State<Register> {
                 child: TextFormField(
                   focusNode: _phoneFocusNode,
                   controller: _phoneController,
-                  keyboardType: TextInputType.emailAddress,
+                  keyboardType: TextInputType.phone,
                   decoration: const InputDecoration(
                     border: OutlineInputBorder(),
                     label: Text("Phone Number"),
@@ -98,6 +104,39 @@ class _RegisterState extends State<Register> {
                       FocusScope.of(context).requestFocus(_emailFocusNode),
                 ),
               ),
+              // choosing the department
+              Padding(
+                  padding: const EdgeInsets.only(left: 8.0),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text(
+                        "Department : ",
+                        style: MyStyle().subText,
+                      ),
+                      DropdownButton(
+                        value: department,
+                        underline: Container(
+                          width: 150,
+                          height: 2,
+                          color: AppColors.appBar_theme,
+                        ),
+                        items: MyConstants().departments.map((value) {
+                          return DropdownMenuItem(
+                              value: value, child: Text(value));
+                        }).toList(),
+                        onChanged: (value) {
+                          // This is called when the user selects an item.
+                          if (value is String) {
+                            setState(() {
+                              department = value;
+                            });
+                          }
+                        },
+                      ),
+                      addHorizontalSpace(20)
+                    ],
+                  )),
               // email textform field
               Padding(
                 padding: const EdgeInsets.all(8.0),
@@ -172,6 +211,13 @@ class _RegisterState extends State<Register> {
                   // checking for name length
                   if (_nameController.text.isEmpty) {
                     Message.flushBarErrorMessage(context, "Enter a valid Name");
+                  } else if (_phoneController.text.isEmpty ||
+                      _phoneController.text.length != 10) {
+                    Message.flushBarErrorMessage(
+                        context, "Enter a Phone Number");
+                  } else if (department == MyConstants().departments.first) {
+                    Message.flushBarErrorMessage(
+                        context, "Choose a department");
                   }
 
                   // checking for email format and length
@@ -190,14 +236,17 @@ class _RegisterState extends State<Register> {
                         context, "Accept to terms and conditions to proceed");
                   } else {
                     try {
+                      RegistrationModel registerData = RegistrationModel(
+                          name: _nameController.text,
+                          phoneNumber: int.parse(_phoneController.text),
+                          email: _emailController.text,
+                          category: department);
                       // saving the data onto cloud firestore database
                       AuthenticationBase auth = Authentication();
                       auth.createUserWithEmailAndPassword(
-                          context,
-                          _emailController.text,
-                          _passwordController.text,
-                          _nameController.text,
-                          int.parse(_phoneController.text));
+                        registerData,
+                        _passwordController.text,
+                      );
                       Navigator.pop(context);
                       // catch any exceptions occured
                     } catch (e) {

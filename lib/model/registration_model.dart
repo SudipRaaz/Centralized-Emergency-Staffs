@@ -1,18 +1,24 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter/material.dart';
 
 class RegistrationModel {
   String name;
   int phoneNumber;
   String email;
-  String? category;
+  String category;
   bool hasAccess;
+  bool activeStatus;
+  GeoPoint location;
 
-  RegistrationModel(
-      {required this.name,
-      required this.phoneNumber,
-      required this.email,
-      this.category = "Ambulance Department",
-      this.hasAccess = false});
+  RegistrationModel({
+    required this.name,
+    required this.phoneNumber,
+    required this.email,
+    required this.category,
+    this.hasAccess = false,
+    this.activeStatus = false,
+    this.location = const GeoPoint(27.6683, 85.3205),
+  });
 
   factory RegistrationModel.fromJson(Map<dynamic, dynamic> json) {
     return RegistrationModel(
@@ -21,6 +27,8 @@ class RegistrationModel {
       email: json['Email'],
       category: json['Category'],
       hasAccess: json['HasAccess'] as bool,
+      activeStatus: json['ActiveStatus'] as bool,
+      location: json['Location'],
     );
   }
 
@@ -30,13 +38,21 @@ class RegistrationModel {
       'PhoneNumber': phoneNumber,
       'Email': email,
       'Category': category,
-      'hasAccess': hasAccess
+      'HasAccess': hasAccess,
+      'ActiveStatus': activeStatus,
+      'Location': location
     };
   }
 
   factory RegistrationModel.fromSnapshot(DocumentSnapshot snapshot) {
     final registration =
         RegistrationModel.fromJson(snapshot.data() as Map<String, dynamic>);
+    return registration;
+  }
+  factory RegistrationModel.fromQuerySnapshot(
+      AsyncSnapshot<DocumentSnapshot> snapshot) {
+    final registration = RegistrationModel.fromJson(
+        snapshot.data?.data() as Map<String, dynamic>);
     return registration;
   }
 }

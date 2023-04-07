@@ -40,211 +40,211 @@ class ShowDialog {
     );
   }
 
-  // request service dialog box
-  void requestService(BuildContext context, Function onPress, String category,
-      String name, String phoneNumber, double lat, double lng) async {
-    TextEditingController requestService = TextEditingController();
-    bool ambulance = false;
-    bool fireBrigade = false;
-    bool police = false;
-    double latitude = lat;
-    double longitude = lng;
-    return showDialog(
-      context: context,
-      builder: (BuildContext context) {
-        // case id
-        final caseID = int.parse(MinId.getId('10{d}'));
-        return AlertDialog(
-          title: Text('$category Service'),
-          content: SingleChildScrollView(
-            child: ListBody(
-              children: <Widget>[
-                addVerticalSpace(15),
-                const Text('Additional Message (Optional)'),
-                addVerticalSpace(15),
-                TextField(
-                  controller: requestService,
-                  decoration:
-                      const InputDecoration(border: OutlineInputBorder()),
-                ),
-              ],
-            ),
-          ),
-          actions: [
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              children: [
-                ElevatedButton(
-                  style: MyStyle().elevatedButtonSecondary,
-                  child: const Text('Cancel'),
-                  onPressed: () {
-                    Navigator.of(context).pop();
-                    onPress;
-                  },
-                ),
-                addHorizontalSpace(10),
-                ElevatedButton(
-                  style: MyStyle().elevatedButtonPrimary,
-                  child: const Text('Confirm Request'),
-                  onPressed: () {
-                    switch (category) {
-                      case 'Ambulance':
-                        ambulance = true;
-                        break;
-                      case 'Fire Brigade':
-                        fireBrigade = true;
-                        break;
-                      case 'Police':
-                        police = true;
-                        break;
-                    }
-                    // current time
-                    DateTime now = DateTime.now();
-                    // object of abstract class
-                    MyCloudStoreBase object = MyCloudStore();
-                    object.requestService(
-                        caseID,
-                        Authentication().currentUser!.uid,
-                        name,
-                        phoneNumber,
-                        ambulance,
-                        fireBrigade,
-                        police,
-                        requestService.text.trim(),
-                        latitude,
-                        longitude,
-                        now,
-                        "Waiting");
-                    // dispose widget
-                    Navigator.of(context).pop();
-                  },
-                ),
-              ],
-            ),
-          ],
-        );
-      },
-    );
-  }
+  // // request service dialog box
+  // void requestService(BuildContext context, Function onPress, String category,
+  //     String name, String phoneNumber, double lat, double lng) async {
+  //   TextEditingController requestService = TextEditingController();
+  //   bool ambulance = false;
+  //   bool fireBrigade = false;
+  //   bool police = false;
+  //   double latitude = lat;
+  //   double longitude = lng;
+  //   return showDialog(
+  //     context: context,
+  //     builder: (BuildContext context) {
+  //       // case id
+  //       final caseID = int.parse(MinId.getId('10{d}'));
+  //       return AlertDialog(
+  //         title: Text('$category Service'),
+  //         content: SingleChildScrollView(
+  //           child: ListBody(
+  //             children: <Widget>[
+  //               addVerticalSpace(15),
+  //               const Text('Additional Message (Optional)'),
+  //               addVerticalSpace(15),
+  //               TextField(
+  //                 controller: requestService,
+  //                 decoration:
+  //                     const InputDecoration(border: OutlineInputBorder()),
+  //               ),
+  //             ],
+  //           ),
+  //         ),
+  //         actions: [
+  //           Row(
+  //             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+  //             children: [
+  //               ElevatedButton(
+  //                 style: MyStyle().elevatedButtonSecondary,
+  //                 child: const Text('Cancel'),
+  //                 onPressed: () {
+  //                   Navigator.of(context).pop();
+  //                   onPress;
+  //                 },
+  //               ),
+  //               addHorizontalSpace(10),
+  //               ElevatedButton(
+  //                 style: MyStyle().elevatedButtonPrimary,
+  //                 child: const Text('Confirm Request'),
+  //                 onPressed: () {
+  //                   switch (category) {
+  //                     case 'Ambulance':
+  //                       ambulance = true;
+  //                       break;
+  //                     case 'Fire Brigade':
+  //                       fireBrigade = true;
+  //                       break;
+  //                     case 'Police':
+  //                       police = true;
+  //                       break;
+  //                   }
+  //                   // current time
+  //                   DateTime now = DateTime.now();
+  //                   // object of abstract class
+  //                   MyCloudStoreBase object = MyCloudStore();
+  //                   object.requestService(
+  //                       caseID,
+  //                       Authentication().currentUser!.uid,
+  //                       name,
+  //                       phoneNumber,
+  //                       ambulance,
+  //                       fireBrigade,
+  //                       police,
+  //                       requestService.text.trim(),
+  //                       latitude,
+  //                       longitude,
+  //                       now,
+  //                       "Waiting");
+  //                   // dispose widget
+  //                   Navigator.of(context).pop();
+  //                 },
+  //               ),
+  //             ],
+  //           ),
+  //         ],
+  //       );
+  //     },
+  //   );
+  // }
 
   // dialog box for requesting multiple services
-  Future<void> requestMultipleService(BuildContext context, String name,
-      String phoneNumber, double latitude, double longitude) async {
-    final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
-    TextEditingController requestServiceTextController =
-        TextEditingController();
-    bool checkAmbulance = false;
-    bool checkFireBrigade = false;
-    bool checkPolice = false;
-    return await showDialog(
-        context: context,
-        builder: (context) {
-          // case id
-          final caseID = int.parse(MinId.getId('10{d}'));
-          // for stateful layout builder
-          return StatefulBuilder(builder: (context, setState) {
-            return AlertDialog(
-              title: const Text('Request Multiple Service'),
-              content: Form(
-                  key: _formKey,
-                  child: Column(
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      Row(
-                        children: [
-                          Checkbox(
-                              value: checkAmbulance,
-                              onChanged: (value) {
-                                setState(() {
-                                  log('check ambulance : $checkAmbulance');
-                                  checkAmbulance = !checkAmbulance;
-                                });
-                              }),
-                          const Text('Ambulance'),
-                        ],
-                      ),
-                      Row(
-                        children: [
-                          Checkbox(
-                              value: checkFireBrigade,
-                              onChanged: ((value) {
-                                setState(() {
-                                  checkFireBrigade = !checkFireBrigade;
-                                });
-                              })),
-                          const Text('Fire Brigade'),
-                        ],
-                      ),
-                      Row(
-                        children: [
-                          Checkbox(
-                              value: checkPolice,
-                              onChanged: ((value) {
-                                setState(() {
-                                  checkPolice = !checkPolice;
-                                });
-                              })),
-                          const Text('Police'),
-                        ],
-                      ),
-                      addVerticalSpace(15),
-                      TextFormField(
-                        controller: requestServiceTextController,
-                        validator: (value) {
-                          return value!.isNotEmpty ? null : "Invalid Field";
-                        },
-                        decoration: const InputDecoration(
-                            border: OutlineInputBorder(),
-                            hintText: "Message (Optional)"),
-                      ),
-                    ],
-                  )),
-              actions: <Widget>[
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                  children: [
-                    ElevatedButton(
-                      style: MyStyle().elevatedButtonSecondary,
-                      child: const Text('Cancel'),
-                      onPressed: () {
-                        Navigator.of(context).pop();
-                      },
-                    ),
-                    addHorizontalSpace(10),
-                    ElevatedButton(
-                      style: MyStyle().elevatedButtonPrimary,
-                      child: const Text('Confirm Request'),
-                      onPressed: () {
-                        if (_formKey.currentState!.validate()) {
-                          // current time
-                          DateTime now = DateTime.now();
-                          // object of abstract class
-                          MyCloudStoreBase object = MyCloudStore();
-                          object.requestService(
-                              caseID,
-                              Authentication().currentUser!.uid,
-                              name,
-                              phoneNumber,
-                              checkAmbulance,
-                              checkFireBrigade,
-                              checkPolice,
-                              requestServiceTextController.text.trim(),
-                              latitude,
-                              longitude,
-                              now,
-                              "Waiting");
-                          // Do something like updating SharedPreferences or User Settings etc.
-                          Navigator.of(context).pop();
-                        }
-                      },
-                    ),
-                  ],
-                ),
-              ],
-            );
-          });
-        });
-  }
+  // Future<void> requestMultipleService(BuildContext context, String name,
+  //     String phoneNumber, double latitude, double longitude) async {
+  //   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
+  //   TextEditingController requestServiceTextController =
+  //       TextEditingController();
+  //   bool checkAmbulance = false;
+  //   bool checkFireBrigade = false;
+  //   bool checkPolice = false;
+  //   return await showDialog(
+  //       context: context,
+  //       builder: (context) {
+  //         // case id
+  //         final caseID = int.parse(MinId.getId('10{d}'));
+  //         // for stateful layout builder
+  //         return StatefulBuilder(builder: (context, setState) {
+  //           return AlertDialog(
+  //             title: const Text('Request Multiple Service'),
+  //             content: Form(
+  //                 key: _formKey,
+  //                 child: Column(
+  //                   mainAxisSize: MainAxisSize.min,
+  //                   children: [
+  //                     Row(
+  //                       children: [
+  //                         Checkbox(
+  //                             value: checkAmbulance,
+  //                             onChanged: (value) {
+  //                               setState(() {
+  //                                 log('check ambulance : $checkAmbulance');
+  //                                 checkAmbulance = !checkAmbulance;
+  //                               });
+  //                             }),
+  //                         const Text('Ambulance'),
+  //                       ],
+  //                     ),
+  //                     Row(
+  //                       children: [
+  //                         Checkbox(
+  //                             value: checkFireBrigade,
+  //                             onChanged: ((value) {
+  //                               setState(() {
+  //                                 checkFireBrigade = !checkFireBrigade;
+  //                               });
+  //                             })),
+  //                         const Text('Fire Brigade'),
+  //                       ],
+  //                     ),
+  //                     Row(
+  //                       children: [
+  //                         Checkbox(
+  //                             value: checkPolice,
+  //                             onChanged: ((value) {
+  //                               setState(() {
+  //                                 checkPolice = !checkPolice;
+  //                               });
+  //                             })),
+  //                         const Text('Police'),
+  //                       ],
+  //                     ),
+  //                     addVerticalSpace(15),
+  //                     TextFormField(
+  //                       controller: requestServiceTextController,
+  //                       validator: (value) {
+  //                         return value!.isNotEmpty ? null : "Invalid Field";
+  //                       },
+  //                       decoration: const InputDecoration(
+  //                           border: OutlineInputBorder(),
+  //                           hintText: "Message (Optional)"),
+  //                     ),
+  //                   ],
+  //                 )),
+  //             actions: <Widget>[
+  //               Row(
+  //                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+  //                 children: [
+  //                   ElevatedButton(
+  //                     style: MyStyle().elevatedButtonSecondary,
+  //                     child: const Text('Cancel'),
+  //                     onPressed: () {
+  //                       Navigator.of(context).pop();
+  //                     },
+  //                   ),
+  //                   addHorizontalSpace(10),
+  //                   ElevatedButton(
+  //                     style: MyStyle().elevatedButtonPrimary,
+  //                     child: const Text('Confirm Request'),
+  //                     onPressed: () {
+  //                       if (_formKey.currentState!.validate()) {
+  //                         // current time
+  //                         DateTime now = DateTime.now();
+  //                         // object of abstract class
+  //                         MyCloudStoreBase object = MyCloudStore();
+  //                         object.requestService(
+  //                             caseID,
+  //                             Authentication().currentUser!.uid,
+  //                             name,
+  //                             phoneNumber,
+  //                             checkAmbulance,
+  //                             checkFireBrigade,
+  //                             checkPolice,
+  //                             requestServiceTextController.text.trim(),
+  //                             latitude,
+  //                             longitude,
+  //                             now,
+  //                             "Waiting");
+  //                         // Do something like updating SharedPreferences or User Settings etc.
+  //                         Navigator.of(context).pop();
+  //                       }
+  //                     },
+  //                   ),
+  //                 ],
+  //               ),
+  //             ],
+  //           );
+  //         });
+  //       });
+  // }
 
   // report bug dialog box
   void reportBug(

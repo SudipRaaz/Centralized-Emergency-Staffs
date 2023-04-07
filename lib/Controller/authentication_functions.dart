@@ -1,6 +1,7 @@
 import 'package:ambulance_staff/Controller/authentication_base.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/src/widgets/framework.dart';
+import '../model/registration_model.dart';
 import '../utilities/InfoDisplay/message.dart';
 import 'cloud_firestore.dart';
 import 'cloud_firestore_base.dart';
@@ -13,20 +14,12 @@ class Authentication extends AuthenticationBase {
   Stream<User?> get authStateChange => _firebaseAuth.idTokenChanges();
 
   @override
-  Future createUserWithEmailAndPassword(BuildContext context, String email,
-      String password, String name, int phoneNumber) async {
-    try {
-      await _firebaseAuth.createUserWithEmailAndPassword(
-          email: email, password: password);
-      MyCloudStoreBase obj = MyCloudStore();
-      obj.registerUser(
-          Authentication().currentUser!.uid, name, email, phoneNumber);
-    } on FirebaseAuthException catch (error) {
-      Message.flutterToast(context, error.message.toString());
-      // catch any error and display it to the user
-    } catch (error) {
-      Message.flutterToast(context, error.toString());
-    }
+  Future createUserWithEmailAndPassword(
+      RegistrationModel registerData, String password) async {
+    await _firebaseAuth.createUserWithEmailAndPassword(
+        email: registerData.email, password: password);
+    MyCloudStoreBase obj = MyCloudStore();
+    obj.registerUser(Authentication().currentUser!.uid, registerData);
   }
 
   @override
