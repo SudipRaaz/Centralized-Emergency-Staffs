@@ -236,17 +236,14 @@ class _RegisterState extends State<Register> {
                         context, "Accept to terms and conditions to proceed");
                   } else {
                     try {
-                      RegistrationModel registerData = RegistrationModel(
-                          name: _nameController.text,
-                          phoneNumber: int.parse(_phoneController.text),
-                          email: _emailController.text,
-                          category: department);
                       // saving the data onto cloud firestore database
                       AuthenticationBase auth = Authentication();
                       auth.createUserWithEmailAndPassword(
-                        registerData,
-                        _passwordController.text,
-                      );
+                          _nameController.text,
+                          _emailController.text,
+                          _passwordController.text,
+                          int.parse(_phoneController.text),
+                          department);
                       Navigator.pop(context);
                       // catch any exceptions occured
                     } catch (e) {

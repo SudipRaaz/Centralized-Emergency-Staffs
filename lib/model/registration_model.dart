@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 
 class RegistrationModel {
   String name;
+  String uid;
   int phoneNumber;
   String email;
   String category;
@@ -12,6 +13,7 @@ class RegistrationModel {
 
   RegistrationModel({
     required this.name,
+    required this.uid,
     required this.phoneNumber,
     required this.email,
     required this.category,
@@ -23,6 +25,7 @@ class RegistrationModel {
   factory RegistrationModel.fromJson(Map<dynamic, dynamic> json) {
     return RegistrationModel(
       name: json['Name'],
+      uid: json['uid'],
       phoneNumber: int.parse(json['PhoneNumber']),
       email: json['Email'],
       category: json['Category'],
@@ -35,6 +38,7 @@ class RegistrationModel {
   Map<String, dynamic> toJson() {
     return <String, dynamic>{
       'Name': name,
+      'UID': uid,
       'PhoneNumber': phoneNumber,
       'Email': email,
       'Category': category,

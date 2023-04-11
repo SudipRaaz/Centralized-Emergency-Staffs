@@ -14,10 +14,17 @@ class Authentication extends AuthenticationBase {
   Stream<User?> get authStateChange => _firebaseAuth.idTokenChanges();
 
   @override
-  Future createUserWithEmailAndPassword(
-      RegistrationModel registerData, String password) async {
+  Future createUserWithEmailAndPassword(String name, String email,
+      String password, int phoneNumber, String category) async {
     await _firebaseAuth.createUserWithEmailAndPassword(
-        email: registerData.email, password: password);
+        email: email, password: password);
+
+    RegistrationModel registerData = RegistrationModel(
+        name: name,
+        uid: Authentication().currentUser!.uid,
+        phoneNumber: phoneNumber,
+        email: email,
+        category: category);
     MyCloudStoreBase obj = MyCloudStore();
     obj.registerUser(Authentication().currentUser!.uid, registerData);
   }
