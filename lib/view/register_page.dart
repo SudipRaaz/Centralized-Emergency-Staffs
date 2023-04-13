@@ -238,12 +238,17 @@ class _RegisterState extends State<Register> {
                     try {
                       // saving the data onto cloud firestore database
                       AuthenticationBase auth = Authentication();
-                      auth.createUserWithEmailAndPassword(
-                          _nameController.text,
-                          _emailController.text,
-                          _passwordController.text,
-                          int.parse(_phoneController.text),
-                          department);
+                      auth
+                          .createUserWithEmailAndPassword(
+                              context,
+                              _nameController.text,
+                              _emailController.text,
+                              _passwordController.text,
+                              int.parse(_phoneController.text),
+                              department)
+                          .onError((error, stackTrace) =>
+                              Message.flushBarErrorMessage(
+                                  context, stackTrace.toString()));
                       Navigator.pop(context);
                       // catch any exceptions occured
                     } catch (e) {

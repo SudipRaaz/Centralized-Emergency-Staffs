@@ -1,9 +1,10 @@
 import 'dart:developer';
 
 import 'package:ambulance_staff/model/department_manager.dart';
-import 'package:ambulance_staff/view/ambulance_dashboard.dart';
+import 'package:ambulance_staff/view/Ambulance_Staff/ambulance_dashboard.dart';
+import 'package:ambulance_staff/view/FireBrigade_staff/fire_dashboard.dart';
+import 'package:ambulance_staff/view/Police_staff/police_dashboard.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:ambulance_staff/Controller/authentication_base.dart';
 import 'package:ambulance_staff/Controller/authentication_functions.dart';
 import 'package:ambulance_staff/resource/constants/service_constant.dart';
 import 'package:ambulance_staff/utilities/InfoDisplay/dialogbox.dart';
@@ -64,6 +65,7 @@ class _DashboardPageState extends State<DashboardPage> {
               return Text("Error: " + snapshot.error.toString());
             }
             if (snapshot.hasData) {
+              // Authentication().signOut();
               // mapping json data to map
               Map<String, dynamic> data =
                   snapshot.data?.data() as Map<String, dynamic>;
@@ -75,7 +77,10 @@ class _DashboardPageState extends State<DashboardPage> {
               if (data['Category'] == 'Ambulance Department') {
                 return Ambulance_dashboard();
               } else if (data['Category'] == 'FireBrigade Department') {
-              } else if (data['Category'] == 'Police Department') {}
+                return Fire_dashboard();
+              } else if (data['Category'] == 'Police Department') {
+                return PoliceDashboard();
+              }
 
               return Center(
                 child: Text('Contact your respective department'),

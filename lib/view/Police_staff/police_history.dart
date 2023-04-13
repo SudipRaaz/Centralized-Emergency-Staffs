@@ -1,16 +1,16 @@
 import 'dart:developer';
 
+import 'package:ambulance_staff/model/department_manager.dart';
+import 'package:ambulance_staff/resource/constants/colors.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:ambulance_staff/Controller/authentication_functions.dart';
 import 'package:ambulance_staff/resource/components/buttons.dart';
 import 'package:ambulance_staff/view/google_map.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import '../model/department_manager.dart';
-import '../resource/constants/colors.dart';
 
-class AmbulanceHistory extends StatelessWidget {
-  const AmbulanceHistory({super.key});
+class PoliceHistory extends StatelessWidget {
+  const PoliceHistory({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -26,6 +26,7 @@ class AmbulanceHistory extends StatelessWidget {
           .collection('AmbulanceDepartment')
           .where('ambulanceAllotedID',
               isEqualTo: Authentication().currentUser!.uid)
+          .where('Status', isEqualTo: 'Completed')
           .snapshots();
 
       return StreamBuilder(

@@ -1,66 +1,59 @@
-import 'package:ambulance_staff/view/service_map_page.dart';
+import 'dart:developer';
+
+import 'package:ambulance_staff/model/department_manager.dart';
+import 'package:ambulance_staff/resource/constants/colors.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:ambulance_staff/Controller/authentication_functions.dart';
+import 'package:ambulance_staff/resource/components/buttons.dart';
+import 'package:ambulance_staff/view/google_map.dart';
 import 'package:flutter/material.dart';
-import '../Controller/authentication_base.dart';
-import '../Controller/authentication_functions.dart';
-import '../resource/components/buttons.dart';
-import '../resource/constants/colors.dart';
-import 'google_map.dart';
+import 'package:provider/provider.dart';
 
-class Ambulance_dashboard extends StatefulWidget {
-  const Ambulance_dashboard({super.key});
-
-  @override
-  State<Ambulance_dashboard> createState() => _Ambulance_dashboardState();
-}
-
-class _Ambulance_dashboardState extends State<Ambulance_dashboard> {
-  // bool staffStatus;
+class AmbulanceHistory extends StatelessWidget {
+  const AmbulanceHistory({super.key});
 
   @override
   Widget build(BuildContext context) {
-    // data stream references
-    final Stream<QuerySnapshot> _userCase = FirebaseFirestore.instance
-        .collection('AmbulanceDepartment')
-        .where('ambulanceAllotedID',
-            isEqualTo: Authentication().currentUser!.uid)
-        .where('Status', isEqualTo: 'Waiting')
-        // .where('Status', isEqualTo: 'InProgress')
-        .snapshots();
+    String uid = Authentication().currentUser!.uid;
 
     // list
     List historyDocs;
+    log('uid : $uid');
 
-    // media values
-    final _height = MediaQuery.of(context).size.height;
-    final _width = MediaQuery.of(context).size.width;
+    return Consumer<DepartmentManager>(
+        builder: (context, departmentManager, child) {
+      final Stream<QuerySnapshot> _userHistory = FirebaseFirestore.instance
+          .collection('AmbulanceDepartment')
+          .where('ambulanceAllotedID',
+              isEqualTo: Authentication().currentUser!.uid)
+          .where('Status', isEqualTo: 'Completed')
+          .snapshots();
 
-    return Scaffold(
-        appBar: AppBar(
-          title: const Text('Ambulance Department'),
-          backgroundColor: AppColors.appBar_theme,
-        ),
-        body: StreamBuilder(
-            stream: _userCase,
-            builder: (BuildContext context, snapshot) {
-              if (snapshot.hasError) {
-                return const Center(child: Text('Something went wrong'));
-              }
-              if (snapshot.connectionState == ConnectionState.waiting) {
-                return const Center(child: Text("Loading"));
-              }
-              if (snapshot.hasData) {
-                //clearing the productsDocs list
-                historyDocs = [];
+      return StreamBuilder(
+          stream: _userHistory,
+          builder: (BuildContext context, AsyncSnapshot snapshot) {
+            if (snapshot.hasError) {
+              return const Center(child: Text('Something went wrong'));
+            }
+            if (snapshot.connectionState == ConnectionState.waiting) {
+              return const Center(child: Text("Loading"));
+            }
+            if (snapshot.hasData) {
+              //clearing the productsDocs list
+              historyDocs = [];
 
-                snapshot.data!.docs.map((DocumentSnapshot document) {
-                  Map historyData = document.data() as Map<String, dynamic>;
-                  historyDocs.add(historyData);
-                }).toList();
+              snapshot.data!.docs.map((DocumentSnapshot document) {
+                Map historyData = document.data() as Map<String, dynamic>;
+                historyDocs.add(historyData);
+              }).toList();
 
-                return SingleChildScrollView(
-                  child: SizedBox(
-                    height: _height,
+              return Scaffold(
+                appBar: AppBar(
+                  title: const Text("History"),
+                  backgroundColor: AppColors.appBar_theme,
+                ),
+                body: SizedBox(
+                    height: MediaQuery.of(context).size.height,
                     child: ListView.separated(
                       itemBuilder: (context, index) {
                         // formating timestamp from firebase data
@@ -111,7 +104,7 @@ Case ID: ${historyDocs[index]['caseID']}
 Date: ${dateTime.year}/${dateTime.month}/${dateTime.day}        Time: ${dateTime.hour}:${dateTime.minute}:${dateTime.second}
 Requeseted Service :  $requestService
 Message : ${historyDocs[index]['message']}
-Response:
+Response
 $serviceAlloted
 ${historyDocs[index]['ambulanceAllotedID']}
 ''',
@@ -152,13 +145,13 @@ ${historyDocs[index]['ambulanceAllotedID']}
                           height: 8,
                         );
                       },
-                    ),
-                  ),
-                );
-              }
-              return const Center(
-                child: CircularProgressIndicator(),
+                    )),
               );
-            }));
+            }
+            return const Center(
+              child: Text('Error, No data'),
+            );
+          });
+    });
   }
 }

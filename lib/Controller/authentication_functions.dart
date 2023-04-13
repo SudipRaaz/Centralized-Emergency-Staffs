@@ -14,8 +14,8 @@ class Authentication extends AuthenticationBase {
   Stream<User?> get authStateChange => _firebaseAuth.idTokenChanges();
 
   @override
-  Future createUserWithEmailAndPassword(String name, String email,
-      String password, int phoneNumber, String category) async {
+  Future createUserWithEmailAndPassword(BuildContext context, String name,
+      String email, String password, int phoneNumber, String category) async {
     await _firebaseAuth.createUserWithEmailAndPassword(
         email: email, password: password);
 
@@ -26,7 +26,9 @@ class Authentication extends AuthenticationBase {
         email: email,
         category: category);
     MyCloudStoreBase obj = MyCloudStore();
-    obj.registerUser(Authentication().currentUser!.uid, registerData);
+    obj.registerUser(Authentication().currentUser!.uid, registerData).onError(
+        (error, stackTrace) =>
+            Message.flushBarErrorMessage(context, stackTrace.toString()));
   }
 
   @override
