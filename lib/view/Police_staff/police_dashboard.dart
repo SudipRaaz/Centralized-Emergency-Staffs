@@ -19,9 +19,8 @@ class _PoliceDashboardState extends State<PoliceDashboard> {
   Widget build(BuildContext context) {
     // data stream references
     final Stream<QuerySnapshot> _userCase = FirebaseFirestore.instance
-        .collection('AmbulanceDepartment')
-        .where('ambulanceAllotedID',
-            isEqualTo: Authentication().currentUser!.uid)
+        .collection('PoliceDepartment')
+        .where('policeAllotedID', isEqualTo: Authentication().currentUser!.uid)
         .where('Status', whereIn: ['Waiting', 'In Progress'])
 
         // .where('Status', isEqualTo: 'InProgress')
@@ -36,7 +35,7 @@ class _PoliceDashboardState extends State<PoliceDashboard> {
 
     return Scaffold(
         appBar: AppBar(
-          title: const Text('Ambulance Department'),
+          title: const Text('Police Department'),
           backgroundColor: AppColors.appBar_theme,
         ),
         body: StreamBuilder(

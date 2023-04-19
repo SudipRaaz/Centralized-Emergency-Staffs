@@ -108,10 +108,9 @@ Status :  ${historyDocs[index]['Status']}
 Case ID: ${historyDocs[index]['caseID']}
 Date: ${dateTime.year}/${dateTime.month}/${dateTime.day}        Time: ${dateTime.hour}:${dateTime.minute}:${dateTime.second}
 Requeseted Service :  $requestService
-Message : ${historyDocs[index]['message']}
-Response:
-$serviceAlloted
-${historyDocs[index]['ambulanceAllotedID']}
+Message : 
+      ${historyDocs[index]['message']}
+Response: $serviceAlloted
 ''',
                                   style: const TextStyle(fontSize: 18),
                                 ),

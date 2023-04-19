@@ -1,5 +1,6 @@
 import 'dart:developer';
 
+import 'package:ambulance_staff/resource/constants/colors.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:ambulance_staff/Controller/authentication_functions.dart';
 import 'package:flutter/material.dart';
@@ -111,6 +112,7 @@ class _MyMapState extends State<MyMap> {
           return Scaffold(
               appBar: AppBar(
                 title: Text("MAP"),
+                backgroundColor: AppColors.appBar_theme,
               ),
               body: GoogleMap(
                 mapType: MapType.normal,

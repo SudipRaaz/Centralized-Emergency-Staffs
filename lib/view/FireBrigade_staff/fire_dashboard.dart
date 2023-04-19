@@ -36,7 +36,7 @@ class _Fire_dashboardState extends State<Fire_dashboard> {
 
     return Scaffold(
         appBar: AppBar(
-          title: const Text('Ambulance Department'),
+          title: const Text('Fire Brigade Department'),
           backgroundColor: AppColors.appBar_theme,
         ),
         body: StreamBuilder(

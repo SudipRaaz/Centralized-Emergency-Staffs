@@ -23,8 +23,8 @@ class PoliceHistory extends StatelessWidget {
     return Consumer<DepartmentManager>(
         builder: (context, departmentManager, child) {
       final Stream<QuerySnapshot> _userHistory = FirebaseFirestore.instance
-          .collection('AmbulanceDepartment')
-          .where('ambulanceAllotedID',
+          .collection('PoliceDepartment')
+          .where('policeAllotedID',
               isEqualTo: Authentication().currentUser!.uid)
           .where('Status', isEqualTo: 'Completed')
           .snapshots();
