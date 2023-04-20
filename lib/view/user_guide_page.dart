@@ -1,6 +1,5 @@
+import 'package:ambulance_staff/resource/constants/colors.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/src/widgets/framework.dart';
-import 'package:flutter/src/widgets/placeholder.dart';
 
 class UserGuidePage extends StatelessWidget {
   const UserGuidePage({super.key});
@@ -9,13 +8,24 @@ class UserGuidePage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('User Guide'),
+        title: const Text('User Guide'),
+        backgroundColor: AppColors.appBar_theme,
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
-          children: <Widget>[
+          children: const <Widget>[
+            Text(
+              'Activate your online Status',
+              style: TextStyle(fontSize: 20.0, fontWeight: FontWeight.bold),
+            ),
+            SizedBox(height: 10.0),
+            Text(
+              'From the Profile page, you can toggle between offline and online status when ever you need to update your availability status.',
+              style: TextStyle(fontSize: 16.0),
+            ),
+            SizedBox(height: 10.0),
             Text(
               'Navigating Within the Application',
               style: TextStyle(fontSize: 20.0, fontWeight: FontWeight.bold),
@@ -42,7 +52,7 @@ class UserGuidePage extends StatelessWidget {
             ),
             SizedBox(height: 10.0),
             Text(
-              'In the Dashboard page, you can request for multiple services such as ambulance, police, and fire brigade.',
+              'In the Dashboard page, you can view the cases assigned to you by the administrator',
               style: TextStyle(fontSize: 16.0),
             ),
             SizedBox(height: 10.0),

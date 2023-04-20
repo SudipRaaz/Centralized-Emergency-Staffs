@@ -2,7 +2,6 @@ import 'package:ambulance_staff/Controller/authentication_functions.dart';
 import 'package:flutter/cupertino.dart';
 
 import '../page_layout.dart';
-import 'dashboard_page.dart';
 import 'login_page.dart';
 
 class Splash_Screen extends StatefulWidget {

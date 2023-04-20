@@ -110,7 +110,6 @@ Requeseted Service :  $requestService
 Message : ${historyDocs[index]['message']}
 Response:
 $serviceAlloted
-${historyDocs[index]['ambulanceAllotedID']}
 ''',
                                   style: const TextStyle(fontSize: 18),
                                 ),

@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:ambulance_staff/model/department_manager.dart';
 import 'package:ambulance_staff/resource/constants/colors.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -14,11 +12,8 @@ class FireHistory extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    String uid = Authentication().currentUser!.uid;
-
     // list
     List historyDocs;
-    log('uid : $uid');
 
     return Consumer<DepartmentManager>(
         builder: (context, departmentManager, child) {

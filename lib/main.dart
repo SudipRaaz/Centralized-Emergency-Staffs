@@ -29,6 +29,7 @@ class MyApp extends StatelessWidget {
         Provider(create: (_) => DashboardPage()),
       ],
       child: MaterialApp(
+        debugShowCheckedModeBanner: false,
         title: 'Flutter Demo',
         theme: ThemeData(
           primarySwatch: Colors.blue,

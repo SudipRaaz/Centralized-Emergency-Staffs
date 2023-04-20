@@ -1,6 +1,5 @@
 import 'package:ambulance_staff/Controller/authentication_base.dart';
 import 'package:ambulance_staff/Controller/authentication_functions.dart';
-import 'package:ambulance_staff/model/registration_model.dart';
 import 'package:flutter/material.dart';
 import 'package:validators/validators.dart';
 
@@ -48,7 +47,7 @@ class _RegisterState extends State<Register> {
 
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Register'),
+        title: const Text('Staff Registeration'),
         centerTitle: true,
         backgroundColor: AppColors.appBar_theme,
       ),
@@ -62,9 +61,6 @@ class _RegisterState extends State<Register> {
                 child: Container(
                   width: width * .7,
                   height: height * .1,
-                  // decoration: const BoxDecoration(
-                  //     image: DecorationImage(
-                  //         image: AssetImage('assets/app_logo.png')))
                 ),
               ),
 

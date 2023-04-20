@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:ambulance_staff/model/department_manager.dart';
 import 'package:ambulance_staff/view/Ambulance_Staff/ambulance_dashboard.dart';
 import 'package:ambulance_staff/view/FireBrigade_staff/fire_dashboard.dart';
@@ -7,15 +5,8 @@ import 'package:ambulance_staff/view/Police_staff/police_dashboard.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:ambulance_staff/Controller/authentication_functions.dart';
 import 'package:ambulance_staff/resource/constants/service_constant.dart';
-import 'package:ambulance_staff/utilities/InfoDisplay/dialogbox.dart';
-import 'package:ambulance_staff/view/service_map_page.dart';
 import 'package:flutter/material.dart';
-import 'package:geolocator/geolocator.dart';
-import 'package:min_id/min_id.dart';
 import 'package:provider/provider.dart';
-import '../model/registration_model.dart';
-import '../resource/constants/colors.dart';
-import '../utilities/InfoDisplay/message.dart';
 
 class DashboardPage extends StatefulWidget {
   const DashboardPage({Key? key}) : super(key: key);
@@ -82,149 +73,14 @@ class _DashboardPageState extends State<DashboardPage> {
                 return PoliceDashboard();
               }
 
-              return Center(
+              return const Center(
                 child: Text('Contact your respective department'),
               );
             }
-            return Text("Error loading");
+            return const Text("Error loading");
           });
     });
   }
-
-  // Scaffold Ambulance_dashboard(BuildContext context, Map<String, dynamic> data,
-  //     double height, double width) {
-  //   return Scaffold(
-  //       appBar: AppBar(
-  //         title: const Text('Centralized Emergency Services '),
-  //         backgroundColor: AppColors.appBar_theme,
-  //         actions: [
-  //           Padding(
-  //             padding: const EdgeInsets.all(8.0),
-  //             child: ElevatedButton(
-  //               onPressed: () {
-  //                 AuthenticationBase auth = Authentication();
-  //                 auth.signOut();
-  //               },
-  //               style: ElevatedButton.styleFrom(
-  //                   shape: const StadiumBorder(),
-  //                   backgroundColor: AppColors.button_color,
-  //                   foregroundColor: AppColors.blackColor),
-  //               child: const Text('log Out'),
-  //             ),
-  //           ),
-  //         ],
-  //       ),
-  //       body: SingleChildScrollView(
-  //         child: Column(
-  //           children: [
-  //             SizedBox(
-  //               height: 100,
-  //               child: Padding(
-  //                 padding:
-  //                     const EdgeInsets.symmetric(vertical: 8.0, horizontal: 30),
-  //                 child: Row(
-  //                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
-  //                   children: [
-  //                     const Text("Panic Mode "),
-  //                     ElevatedButton(
-  //                       onPressed: () {},
-  //                       style: ElevatedButton.styleFrom(
-  //                           shape: const StadiumBorder(),
-  //                           backgroundColor: AppColors.button_color,
-  //                           foregroundColor: AppColors.blackColor),
-  //                       child: const Text('Enable'),
-  //                     ),
-  //                     ElevatedButton(
-  //                       onPressed: () {
-  //                         Navigator.push(context, MaterialPageRoute(
-  //                             builder: (BuildContext context) {
-  //                           return ServicePage();
-  //                         }));
-  //                       },
-  //                       style: ElevatedButton.styleFrom(
-  //                           shape: const StadiumBorder(),
-  //                           backgroundColor: AppColors.button_color,
-  //                           foregroundColor: AppColors.blackColor),
-  //                       child: const Text('Map'),
-  //                     ),
-  //                   ],
-  //                 ),
-  //               ),
-  //             ),
-  //             Text(
-  //                 "$latitude   $longitude, ${data['Name']}, ${data['PhoneNumber']}"),
-  //             // tile lists
-  //             SizedBox(
-  //               height: height,
-  //               width: width,
-  //               child: GridView.builder(
-  //                   gridDelegate:
-  //                       const SliverGridDelegateWithMaxCrossAxisExtent(
-  //                     maxCrossAxisExtent: 200,
-  //                     childAspectRatio: 3 / 3,
-  //                   ),
-  //                   itemCount: EmergencyServices.servicesTiles.length,
-  //                   itemBuilder: (BuildContext context, index) {
-  //                     return DashboardTile(
-  //                       onPress: () {
-  //                         _determinePosition();
-  //                         switch (index) {
-  //                           case 0:
-  //                             // ambulance
-  //                             ShowDialog().requestService(
-  //                                 context,
-  //                                 () {},
-  //                                 "Ambulance",
-  //                                 data['Name'],
-  //                                 data['PhoneNumber'].toString(),
-  //                                 latitude,
-  //                                 longitude);
-  //                             break;
-  //                           // fire brigade
-  //                           case 1:
-  //                             ShowDialog().requestService(
-  //                                 context,
-  //                                 () {},
-  //                                 "Fire Brigade",
-  //                                 data['Name'],
-  //                                 data['PhoneNumber'].toString(),
-  //                                 latitude,
-  //                                 longitude);
-  //                             break;
-  //                           // police
-  //                           case 2:
-  //                             ShowDialog().requestService(
-  //                                 context,
-  //                                 () {},
-  //                                 "Police",
-  //                                 data['Name'],
-  //                                 data['PhoneNumber'].toString(),
-  //                                 latitude,
-  //                                 longitude);
-  //                             break;
-  //                           // Multiple service requests
-  //                           case 3:
-  //                             ShowDialog().requestMultipleService(
-  //                                 context,
-  //                                 data['Name'],
-  //                                 data['PhoneNumber'].toString(),
-  //                                 latitude,
-  //                                 longitude);
-  //                             break;
-  //                           default:
-  //                             Message.flushBarErrorMessage(
-  //                                 context, "Service index is out of range");
-  //                             break;
-  //                         }
-  //                       },
-  //                       index: index,
-  //                     );
-  //                   }),
-  //             ),
-  //           ],
-  //         ),
-  //       ));
-  // }
 }
 
 class DashboardTile extends StatelessWidget {

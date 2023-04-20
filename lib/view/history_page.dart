@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:ambulance_staff/view/Ambulance_Staff/ambulance_history.dart';
 import 'package:ambulance_staff/view/FireBrigade_staff/fire_history.dart';
 import 'package:ambulance_staff/view/Police_staff/police_history.dart';
@@ -36,8 +34,6 @@ class HistoryPage extends StatelessWidget {
               return Center(child: Text("Loading"));
             }
             if (snapshot.hasData) {
-              log('Department name: ${departmentManager.department}');
-
               switch (departmentManager.department) {
                 case "Ambulance Department":
                   return AmbulanceHistory();

@@ -1,4 +1,3 @@
-import 'dart:developer';
 import 'package:ambulance_staff/Controller/cloud_firestore.dart';
 import 'package:ambulance_staff/Controller/cloud_firestore_base.dart';
 import 'package:ambulance_staff/resource/constants/style.dart';
@@ -185,7 +184,6 @@ class _ProfilePageState extends State<ProfilePage> {
                                       staffStatus = newValue;
 
                                       getUserLocation();
-                                      log('userLocation:  + ${userLocation?.latitude},  ${userLocation?.longitude}');
 
                                       if (userLocation?.latitude == null) {
                                         staffStatus = false;

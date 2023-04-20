@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:ambulance_staff/resource/constants/colors.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:ambulance_staff/Controller/authentication_functions.dart';
@@ -8,7 +6,6 @@ import 'package:flutter_polyline_points/flutter_polyline_points.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:location/location.dart' as loc;
 
-import '../model/request_model.dart';
 import '../resource/constants/service_constant.dart';
 
 class MyMap extends StatefulWidget {
@@ -61,7 +58,6 @@ class _MyMapState extends State<MyMap> {
             streamLocation.add(historyData);
           }).toList();
 
-          log('stream location: ' + streamLocation.toString());
           if (streamLocation[0]['ambulanceAllotedID'] != null) {}
           ambulanceLocation = streamLocation[0]['ambulanceLocation'] ??
               GeoPoint(27.6683, 85.3206);
